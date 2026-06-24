@@ -14,14 +14,7 @@ export function SiteHeader() {
           />
           <h1 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Dashboard</h1>
         </div>
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noreferrer"
-          className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors"
-        >
-          GitHub
-        </a>
+          <div className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">AI </div>
       </div>
     </header>
   )

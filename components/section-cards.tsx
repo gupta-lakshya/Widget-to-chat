@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { TrendingUp, TrendingDown, Sparkles } from "lucide-react"
 import {
   Bar,
   BarChart,
@@ -27,6 +27,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useChat } from "@/components/chat-context"
 
 // Bar Chart data & config
 const barChartData = [
@@ -45,15 +46,15 @@ const barChartConfig = {
   },
   new: {
     label: "New",
-    color: "oklch(0.708 0 0)", // Medium/light grey
+    color: "oklch(0.600 0.03 240)", // Professional slate blue-gray
   },
 } satisfies ChartConfig
 
 // Pie Chart data & config
 const pieChartData = [
   { source: "direct", value: 400, fill: "oklch(0.205 0 0)" },
-  { source: "referral", value: 300, fill: "oklch(0.556 0 0)" },
-  { source: "organic", value: 200, fill: "oklch(0.800 0 0)" },
+  { source: "referral", value: 300, fill: "oklch(0.600 0.03 240)" },
+  { source: "organic", value: 200, fill: "oklch(0.850 0.01 240)" },
 ]
 
 const pieChartConfig = {
@@ -63,11 +64,11 @@ const pieChartConfig = {
   },
   referral: {
     label: "Referral",
-    color: "oklch(0.556 0 0)",
+    color: "oklch(0.600 0.03 240)",
   },
   organic: {
     label: "Organic",
-    color: "oklch(0.800 0 0)",
+    color: "oklch(0.850 0.01 240)",
   },
 } satisfies ChartConfig
 
@@ -83,18 +84,30 @@ const radarChartData = [
 const radarChartConfig = {
   value: {
     label: "Score",
-    color: "oklch(0.205 0 0)",
+    color: "oklch(0.350 0.03 240)", // Slate accent
   },
 } satisfies ChartConfig
 
 export function SectionCards() {
+  const { setActiveTopic } = useChat()
+
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       {/* 1. Total Revenue (Original Metric Card) */}
       <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
-            <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Total Revenue</CardDescription>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setActiveTopic("Total Revenue")}
+                title="Ask AI about this metric"
+                className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
+              >
+                <Sparkles className="size-3 text-violet-500 shrink-0" />
+                <span>AI</span>
+              </button>
+              <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Total Revenue</CardDescription>
+            </div>
             <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/30 rounded-full font-medium gap-1 flex items-center py-0 px-2 h-5 text-[11px]">
               <TrendingUp className="size-3" />
               +12.5%
@@ -119,8 +132,18 @@ export function SectionCards() {
       <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
-            <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Active Users</CardDescription>
-            <span className="text-[10px] text-zinc-450 font-medium">Monthly views</span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setActiveTopic("Active Users")}
+                title="Ask AI about this metric"
+                className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
+              >
+                <Sparkles className="size-3 text-violet-500 shrink-0" />
+                <span>AI</span>
+              </button>
+              <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Active Users</CardDescription>
+            </div>
+            <span className="text-[10px] text-zinc-400 font-medium">Monthly views</span>
           </div>
           <CardTitle className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mt-0.5">
             14,820
@@ -128,12 +151,12 @@ export function SectionCards() {
         </CardHeader>
         <CardContent className="pb-4 px-4">
           <ChartContainer config={barChartConfig} className="h-[110px] w-full">
-            <BarChart data={barChartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--border)" strokeOpacity={0.5} />
+            <BarChart data={barChartData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }} barGap={3}>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--border)" strokeOpacity={0.3} />
               <XAxis
                 dataKey="month"
                 tickLine={false}
-                tickMargin={4}
+                tickMargin={6}
                 axisLine={false}
                 style={{ fontSize: "9px", fill: "var(--muted-foreground)" }}
               />
@@ -141,8 +164,8 @@ export function SectionCards() {
                 cursor={false}
                 content={<ChartTooltipContent indicator="dashed" />}
               />
-              <Bar dataKey="active" fill="var(--color-active)" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="new" fill="var(--color-new)" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="active" fill="var(--color-active)" radius={[2, 2, 0, 0]} barSize={8} />
+              <Bar dataKey="new" fill="var(--color-new)" radius={[2, 2, 0, 0]} barSize={8} />
             </BarChart>
           </ChartContainer>
         </CardContent>
@@ -152,8 +175,18 @@ export function SectionCards() {
       <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
-            <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Traffic Sources</CardDescription>
-            <span className="text-[10px] text-zinc-450 font-medium font-semibold text-emerald-600">+8.2%</span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setActiveTopic("Traffic Sources")}
+                title="Ask AI about this metric"
+                className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
+              >
+                <Sparkles className="size-3 text-violet-500 shrink-0" />
+                <span>AI</span>
+              </button>
+              <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Traffic Sources</CardDescription>
+            </div>
+            <span className="text-[10px] font-semibold text-emerald-600">+8.2%</span>
           </div>
           <CardTitle className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mt-0.5">
             900 sessions
@@ -171,32 +204,32 @@ export function SectionCards() {
                   data={pieChartData}
                   dataKey="value"
                   nameKey="source"
-                  innerRadius={22}
-                  outerRadius={38}
+                  innerRadius={28}
+                  outerRadius={40}
                   strokeWidth={2}
                   stroke="var(--background)"
                 />
               </PieChart>
             </ChartContainer>
           </div>
-          <div className="flex flex-col gap-1.5 text-[10px] font-medium text-zinc-600 dark:text-zinc-400 w-full justify-center">
+          <div className="flex flex-col gap-2 text-[10px] font-medium text-zinc-500 dark:text-zinc-400 w-full justify-center pl-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-zinc-950 shrink-0" />
+                <span className="size-2 rounded-full bg-zinc-950 dark:bg-zinc-50 shrink-0" />
                 <span>Direct</span>
               </div>
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">44%</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-zinc-500 shrink-0" />
+                <span className="size-2 rounded-full bg-[oklch(0.600_0.03_240)] shrink-0" />
                 <span>Referral</span>
               </div>
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">33%</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-zinc-300 shrink-0" />
+                <span className="size-2 rounded-full bg-[oklch(0.850_0.01_240)] shrink-0" />
                 <span>Organic</span>
               </div>
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">22%</span>
@@ -209,8 +242,18 @@ export function SectionCards() {
       <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
-            <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Performance Index</CardDescription>
-            <span className="text-[10px] text-zinc-450 font-medium">System score</span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setActiveTopic("Performance Index")}
+                title="Ask AI about this metric"
+                className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
+              >
+                <Sparkles className="size-3 text-violet-500 shrink-0" />
+                <span>AI</span>
+              </button>
+              <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Performance Index</CardDescription>
+            </div>
+            <span className="text-[10px] text-zinc-400 font-medium">System score</span>
           </div>
           <CardTitle className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mt-0.5">
             86 / 100
@@ -224,11 +267,11 @@ export function SectionCards() {
                 dataKey="feature"
                 tick={{ fill: "var(--muted-foreground)", fontSize: 8 }}
               />
-              <PolarGrid stroke="var(--border)" strokeOpacity={0.6} />
+              <PolarGrid stroke="var(--border)" strokeOpacity={0.3} gridType="circle" />
               <Radar
                 dataKey="value"
                 fill="var(--color-value)"
-                fillOpacity={0.08}
+                fillOpacity={0.06}
                 stroke="var(--color-value)"
                 strokeWidth={1.5}
               />

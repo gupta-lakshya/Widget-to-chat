@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Sparkles } from "lucide-react"
+import { useChat } from "@/components/chat-context"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
@@ -141,6 +143,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
+  const { setActiveTopic } = useChat()
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
 
@@ -166,14 +169,26 @@ export function ChartAreaInteractive() {
 
   return (
     <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs">
-      <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
-        <CardDescription>
-          <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
-          </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setActiveTopic("Total Visitors")}
+              title="Ask AI about this metric"
+              className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer shrink-0"
+            >
+              <Sparkles className="size-3 text-violet-500 shrink-0" />
+              <span>AI</span>
+            </button>
+            <CardTitle>Total Visitors</CardTitle>
+          </div>
+          <CardDescription>
+            <span className="hidden @[540px]/card:block">
+              Total for the last 3 months
+            </span>
+            <span className="@[540px]/card:hidden">Last 3 months</span>
+          </CardDescription>
+        </div>
         <CardAction>
           <ToggleGroup
             type="single"
