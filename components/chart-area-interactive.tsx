@@ -191,12 +191,15 @@ export function ChartAreaInteractive() {
         <div className="space-y-1.5">
           <div className="flex items-center gap-1.5">
             <button
-              onClick={() => setActiveTopic("Total Visitors")}
+              onClick={(e) => {
+                e.stopPropagation()
+                setActiveTopic("Total Visitors")
+              }}
               title="Ask AI about this metric"
-              className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer shrink-0"
+              className="flex items-center gap-1 text-[10px] font-bold text-violet-700 dark:text-violet-400 border border-violet-100 dark:border-violet-950/50 rounded-md px-2.5 py-1 bg-violet-50/50 hover:bg-violet-100/75 dark:bg-violet-950/20 dark:hover:bg-violet-950/40 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-2xs pointer-events-auto shrink-0"
             >
-              <Sparkles className="size-3 text-violet-500 shrink-0" />
-              <span>AI</span>
+              <Sparkles className="size-3.5 text-violet-500 shrink-0" />
+              <span>Ask AI</span>
             </button>
             <CardTitle>Total Visitors</CardTitle>
           </div>

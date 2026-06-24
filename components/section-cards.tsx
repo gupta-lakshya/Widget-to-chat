@@ -127,12 +127,12 @@ export function SectionCards() {
                     setActiveTopic("Total Revenue")
                   }}
                   title="Ask AI about this metric"
-                  className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer pointer-events-auto"
+                  className="flex items-center gap-1 text-[10px] font-bold text-violet-700 dark:text-violet-400 border border-violet-100 dark:border-violet-950/50 rounded-md px-2.5 py-1 bg-violet-50/50 hover:bg-violet-100/75 dark:bg-violet-950/20 dark:hover:bg-violet-950/40 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-2xs pointer-events-auto shrink-0"
                 >
-                  <Sparkles className="size-3 text-violet-500 shrink-0" />
-                  <span>AI</span>
+                  <Sparkles className="size-3.5 text-violet-500 shrink-0" />
+                  <span>Ask AI</span>
                 </button>
-                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Total Revenue</CardDescription>
+                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400 ml-1">Total Revenue</CardDescription>
               </div>
               <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/30 rounded-full font-medium gap-1 flex items-center py-0 px-2 h-5 text-[11px]">
                 <TrendingUp className="size-3" />
@@ -170,12 +170,12 @@ export function SectionCards() {
                     setActiveTopic("Active Users")
                   }}
                   title="Ask AI about this metric"
-                  className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer pointer-events-auto"
+                  className="flex items-center gap-1 text-[10px] font-bold text-violet-700 dark:text-violet-400 border border-violet-100 dark:border-violet-950/50 rounded-md px-2.5 py-1 bg-violet-50/50 hover:bg-violet-100/75 dark:bg-violet-950/20 dark:hover:bg-violet-950/40 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-2xs pointer-events-auto shrink-0"
                 >
-                  <Sparkles className="size-3 text-violet-500 shrink-0" />
-                  <span>AI</span>
+                  <Sparkles className="size-3.5 text-violet-500 shrink-0" />
+                  <span>Ask AI</span>
                 </button>
-                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Active Users</CardDescription>
+                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400 ml-1">Active Users</CardDescription>
               </div>
               <span className="text-[10px] text-zinc-400 font-medium">Monthly views</span>
             </div>
@@ -221,12 +221,12 @@ export function SectionCards() {
                     setActiveTopic("Traffic Sources")
                   }}
                   title="Ask AI about this metric"
-                  className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer pointer-events-auto"
+                  className="flex items-center gap-1 text-[10px] font-bold text-violet-700 dark:text-violet-400 border border-violet-100 dark:border-violet-950/50 rounded-md px-2.5 py-1 bg-violet-50/50 hover:bg-violet-100/75 dark:bg-violet-950/20 dark:hover:bg-violet-950/40 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-2xs pointer-events-auto shrink-0"
                 >
-                  <Sparkles className="size-3 text-violet-500 shrink-0" />
-                  <span>AI</span>
+                  <Sparkles className="size-3.5 text-violet-500 shrink-0" />
+                  <span>Ask AI</span>
                 </button>
-                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Traffic Sources</CardDescription>
+                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400 ml-1">Traffic Sources</CardDescription>
               </div>
               <span className="text-[10px] font-semibold text-emerald-600">+8.2%</span>
             </div>
@@ -296,12 +296,12 @@ export function SectionCards() {
                     setActiveTopic("Performance Index")
                   }}
                   title="Ask AI about this metric"
-                  className="flex items-center gap-0.5 text-[9px] font-bold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md px-1.5 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-900 transition-colors cursor-pointer pointer-events-auto"
+                  className="flex items-center gap-1 text-[10px] font-bold text-violet-700 dark:text-violet-400 border border-violet-100 dark:border-violet-950/50 rounded-md px-2.5 py-1 bg-violet-50/50 hover:bg-violet-100/75 dark:bg-violet-950/20 dark:hover:bg-violet-950/40 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-2xs pointer-events-auto shrink-0"
                 >
-                  <Sparkles className="size-3 text-violet-500 shrink-0" />
-                  <span>AI</span>
+                  <Sparkles className="size-3.5 text-violet-500 shrink-0" />
+                  <span>Ask AI</span>
                 </button>
-                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Performance Index</CardDescription>
+                <CardDescription className="text-xs font-medium text-zinc-500 dark:text-zinc-400 ml-1">Performance Index</CardDescription>
               </div>
               <span className="text-[10px] text-zinc-400 font-medium">System score</span>
             </div>
