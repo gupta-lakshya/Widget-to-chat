@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Widget-to-Chat Dashboard (UI Intern Task Submission)
 
-## Getting Started
+## 🚀 How to Run the Program
 
-First, run the development server:
-
+### 1. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000/dashboard](http://localhost:3000/dashboard) in your browser to see the dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Build Production Bundle (Optional)
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📄 Key Design Decisions (Design Note)
+To address the context-to-chat problem, we implemented a unified state provider (`components/chat-context.tsx`) that synchronizes the active widget's telemetry metadata directly with the AI sidebar's response engine. Visually, the moment of transition is defined by a dynamic **"spotlight focus" transition**—clicking a widget scales it up with soft border rings and deep shadows, while simultaneously dimming and blurring the rest of the dashboard workspace to prioritize focus. We also introduced fluid focus-switching (clicking any dimmed card instantly updates focus) and keyboard exits (pressing `Escape` closes the chat view), guided by a translucent, glassmorphic reminder toast to ensure natural, distraction-free interaction.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ▦ Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Spotlight Focus Mode**: Clicking a widget scales it up and highlights it while dimming and blurring the rest of the page.
+* **Fluid Focus Switching**: Click on any dimmed widget to instantly switch the AI chat focus to that card.
+* **Escape to Exit & Toast Tip**: Press `Esc` to close the sidebar. A soft, translucent tip appears at the bottom to remind you.
+* **Clean Context Banner**: The active widget name and metrics are shown in a flat text banner below the simplified header.
+* **Clean AI Text**: Bold text in mock AI responses is formatted into clean strong text, removing raw asterisks.
