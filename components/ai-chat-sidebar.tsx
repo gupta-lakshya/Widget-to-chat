@@ -56,22 +56,12 @@ export function AiChatSidebar() {
       )}
     >
       {/* Sidebar Header */}
-      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/30">
+      <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/30 shrink-0">
         <div className="flex items-center gap-2">
           <div className="p-1 rounded-md bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900">
             <Sparkles className="size-3.5" />
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">AI Assistant</h3>
-            <div className="flex flex-col gap-0.5 mt-0.5">
-              <p className="text-[10px] text-zinc-500 font-medium">
-                Focus: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{activeTopic}</span>
-              </p>
-              <p className="text-[9px] text-zinc-400 dark:text-zinc-500 font-medium truncate max-w-[240px]">
-                {getTopicContext(activeTopic)}
-              </p>
-            </div>
-          </div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">AI Assistant</h3>
         </div>
         <Button
           variant="ghost"
@@ -81,6 +71,29 @@ export function AiChatSidebar() {
         >
           <X className="size-4" />
         </Button>
+      </div>
+
+      {/* Focus Metadata Capsule */}
+      <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/20 dark:bg-zinc-900/10 shrink-0">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            Selected Context
+          </span>
+          <div className="flex items-center gap-1">
+            <span className="size-1.5 rounded-full bg-violet-500 animate-pulse" />
+            <span className="text-[9px] font-semibold text-violet-600 dark:text-violet-400">
+              Active Focus
+            </span>
+          </div>
+        </div>
+        <div className="mt-1.5">
+          <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+            {activeTopic}
+          </h4>
+          <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium mt-0.5 leading-relaxed">
+            {getTopicContext(activeTopic)}
+          </p>
+        </div>
       </div>
 
       {/* Message Feed */}
