@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils"
 import data from "./data.json"
 
 function DashboardLayout() {
-  const { isOpen } = useChat()
+  const { isOpen, setIsOpen } = useChat()
+  const [showEscTip, setShowEscTip] = React.useState(false)
 
   React.useEffect(() => {
     // Disable default browser (master) scrollbars for this page only
@@ -33,6 +34,32 @@ function DashboardLayout() {
       bodyEl.style.height = ""
     }
   }, [])
+
+  // Listen for Escape key to close focus mode
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isOpen, setIsOpen])
+
+  // Show Escape tip toast for 2 seconds when sidebar opens
+  React.useEffect(() => {
+    if (isOpen) {
+      setShowEscTip(true)
+      const timer = setTimeout(() => {
+        setShowEscTip(false)
+      }, 2000)
+      return () => clearTimeout(timer)
+    } else {
+      setShowEscTip(false)
+    }
+  }, [isOpen])
 
   return (
     <SidebarProvider
@@ -71,6 +98,19 @@ function DashboardLayout() {
           <AiChatSidebar />
         </div>
       </SidebarInset>
+
+      {/* Escape Key Tip Toast */}
+      <div
+        className={cn(
+          "fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 text-zinc-850 dark:text-zinc-200 px-3.5 py-1.5 rounded-full text-[11px] font-bold shadow-xs z-50 flex items-center gap-2 transition-all duration-300 ease-in-out",
+          showEscTip ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        )}
+      >
+        <span className="bg-zinc-100 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-750 text-zinc-550 dark:text-zinc-400 rounded px-1.5 py-0.5 font-mono text-[9px] uppercase shadow-2xs">
+          Esc
+        </span>
+        <span>Press Esc to exit focus mode</span>
+      </div>
     </SidebarProvider>
   )
 }
