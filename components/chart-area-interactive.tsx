@@ -177,11 +177,17 @@ export function ChartAreaInteractive() {
         isOpen
           ? isFocused
             ? "relative z-30 scale-[1.02] shadow-md border-zinc-350 dark:border-zinc-700 ring-4 ring-black/5 dark:ring-white/5"
-            : "opacity-30 scale-[0.98] blur-[0.5px] pointer-events-none saturate-50"
+            : "opacity-30 scale-[0.98] blur-[0.5px] cursor-pointer hover:opacity-50 saturate-50"
           : "relative z-10"
       )}
+      onClick={() => {
+        if (isOpen && activeTopic !== "Total Visitors") {
+          setActiveTopic("Total Visitors")
+        }
+      }}
     >
-      <CardHeader className="flex flex-row items-center justify-between">
+      <div className={cn("flex flex-col w-full h-full", isOpen && activeTopic !== "Total Visitors" && "pointer-events-none")}>
+        <CardHeader className="flex flex-row items-center justify-between">
         <div className="space-y-1.5">
           <div className="flex items-center gap-1.5">
             <button
@@ -313,6 +319,7 @@ export function ChartAreaInteractive() {
           </AreaChart>
         </ChartContainer>
       </CardContent>
+      </div>
     </Card>
   )
 }
