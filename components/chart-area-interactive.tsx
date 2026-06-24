@@ -4,6 +4,7 @@ import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { Sparkles } from "lucide-react"
 import { useChat } from "@/components/chat-context"
+import { cn } from "@/lib/utils"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
@@ -143,7 +144,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
-  const { setActiveTopic } = useChat()
+  const { isOpen, activeTopic, setActiveTopic } = useChat()
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
 
@@ -167,8 +168,19 @@ export function ChartAreaInteractive() {
     return date >= startDate
   })
 
+  const isFocused = isOpen && activeTopic === "Total Visitors"
+
   return (
-    <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+    <Card
+      className={cn(
+        "@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs transition-all duration-300 ease-in-out origin-center",
+        isOpen
+          ? isFocused
+            ? "relative z-30 scale-[1.02] shadow-md border-zinc-350 dark:border-zinc-700 ring-4 ring-black/5 dark:ring-white/5"
+            : "opacity-30 scale-[0.98] blur-[0.5px] pointer-events-none saturate-50"
+          : "relative z-10"
+      )}
+    >
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="space-y-1.5">
           <div className="flex items-center gap-1.5">

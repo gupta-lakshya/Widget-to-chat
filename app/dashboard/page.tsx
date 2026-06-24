@@ -7,12 +7,15 @@ import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { ChatProvider } from "@/components/chat-context"
+import { ChatProvider, useChat } from "@/components/chat-context"
 import { AiChatSidebar } from "@/components/ai-chat-sidebar"
+import { cn } from "@/lib/utils"
 
 import data from "./data.json"
 
-export default function Page() {
+function DashboardLayout() {
+  const { isOpen } = useChat()
+
   React.useEffect(() => {
     // Disable default browser (master) scrollbars for this page only
     const htmlEl = document.documentElement
@@ -32,36 +35,50 @@ export default function Page() {
   }, [])
 
   return (
-    <ChatProvider>
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          } as React.CSSProperties
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset className="bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-col h-screen overflow-hidden">
-          <SiteHeader />
-          <div className="flex flex-1 overflow-hidden">
-            {/* Scrollable Dashboard Panel */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar">
-              <div className="@container/main flex flex-1 flex-col gap-2">
-                <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                  <SectionCards />
-                  <div className="px-4 lg:px-6">
-                    <ChartAreaInteractive />
-                  </div>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset className="bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-col h-screen overflow-hidden">
+        <SiteHeader />
+        <div className="flex flex-1 overflow-hidden">
+          {/* Scrollable Dashboard Panel */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            <div className="@container/main flex flex-1 flex-col gap-2">
+              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                <SectionCards />
+                <div className="px-4 lg:px-6">
+                  <ChartAreaInteractive />
+                </div>
+                {/* DataTable wrapper that dims when AI sidebar is open */}
+                <div 
+                  className={cn(
+                    "transition-all duration-300 ease-in-out origin-center",
+                    isOpen && "opacity-30 scale-[0.98] blur-[0.5px] pointer-events-none saturate-50"
+                  )}
+                >
                   <DataTable data={data} />
                 </div>
               </div>
             </div>
-            {/* AI Chat Sidebar */}
-            <AiChatSidebar />
           </div>
-        </SidebarInset>
-      </SidebarProvider>
+          {/* AI Chat Sidebar */}
+          <AiChatSidebar />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
+
+export default function Page() {
+  return (
+    <ChatProvider>
+      <DashboardLayout />
     </ChatProvider>
   )
 }

@@ -28,6 +28,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useChat } from "@/components/chat-context"
+import { cn } from "@/lib/utils"
 
 // Bar Chart data & config
 const barChartData = [
@@ -89,12 +90,24 @@ const radarChartConfig = {
 } satisfies ChartConfig
 
 export function SectionCards() {
-  const { setActiveTopic } = useChat()
+  const { isOpen, activeTopic, setActiveTopic } = useChat()
+
+  const getCardClass = (topic: string) => {
+    const isFocused = isOpen && activeTopic === topic
+    return cn(
+      "@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px] transition-all duration-300 ease-in-out origin-center",
+      isOpen
+        ? isFocused
+          ? "relative z-30 scale-[1.04] shadow-md border-zinc-350 dark:border-zinc-700 ring-4 ring-black/5 dark:ring-white/5"
+          : "opacity-30 scale-[0.97] blur-[0.5px] pointer-events-none saturate-50"
+        : "relative z-10"
+    )
+  }
 
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       {/* 1. Total Revenue (Original Metric Card) */}
-      <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
+      <Card className={getCardClass("Total Revenue")}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
@@ -129,7 +142,7 @@ export function SectionCards() {
       </Card>
 
       {/* 2. Bar Chart - Multiple */}
-      <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
+      <Card className={getCardClass("Active Users")}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
@@ -172,7 +185,7 @@ export function SectionCards() {
       </Card>
 
       {/* 3. Pie Chart (Donut with side legend) */}
-      <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
+      <Card className={getCardClass("Traffic Sources")}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
@@ -239,7 +252,7 @@ export function SectionCards() {
       </Card>
 
       {/* 4. Radar Chart */}
-      <Card className="@container/card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col justify-between h-[230px]">
+      <Card className={getCardClass("Performance Index")}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
