@@ -9,6 +9,40 @@ export interface Message {
   timestamp: Date
 }
 
+export interface TopicMetadata {
+  title: string
+  context: string
+  initialGreeting: string
+}
+
+export const TOPICS_METADATA: Record<string, TopicMetadata> = {
+  "Total Revenue": {
+    title: "Total Revenue",
+    context: "$1,250.00 (+12.5% trending up)",
+    initialGreeting: "Welcome to the **Total Revenue** analysis space. The current total is **$1,250.00**, which is up by **+12.5%** this month. What insights or forecasts would you like me to generate for this metric?",
+  },
+  "Active Users": {
+    title: "Active Users",
+    context: "14,820 views (Active vs. New)",
+    initialGreeting: "Hello! I've loaded the **Active Users** monthly data. The current total active users stands at **14,820**. Active users peaked in June at 264. Let me know if you want to run user cohort analysis or check trend correlations.",
+  },
+  "Traffic Sources": {
+    title: "Traffic Sources",
+    context: "900 sessions (44% Direct, 33% Referral, 22% Organic)",
+    initialGreeting: "I am ready to help you analyze **Traffic Sources** data. Currently, **Direct** leads with **44%** of the 900 sessions, followed by **Referral** at **33%** and **Organic** at **22%**. What segment details would you like to explore?",
+  },
+  "Performance Index": {
+    title: "Performance Index",
+    context: "86/100 system score (Speed/Uptime/Security/UX)",
+    initialGreeting: "Hi! I've loaded the **Performance Index** radar dataset. The overall system score is **86/100**. Uptime is leading at 95, while UX has the lowest score at 70. How should we proceed with analyzing these performance vectors?",
+  },
+  "Total Visitors": {
+    title: "Total Visitors",
+    context: "Last 3 months data (Desktop vs. Mobile)",
+    initialGreeting: "Welcome! I've loaded the interactive **Total Visitors** chart. It displays desktop and mobile visits for the selected period. How can I help you analyze visitor trends, device distribution, or seasonal spikes?",
+  },
+}
+
 interface ChatContextProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -17,6 +51,7 @@ interface ChatContextProps {
   messages: Record<string, Message[]>
   sendMessage: (text: string) => void
   isTyping: boolean
+  getTopicContext: (topic: string) => string
 }
 
 const ChatContext = React.createContext<ChatContextProps | null>(null)
@@ -30,62 +65,15 @@ export function useChat() {
 }
 
 const initialMessages = (topic: string): Message[] => {
-  switch (topic) {
-    case "Total Revenue":
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "Welcome to the **Total Revenue** analysis space. The current total is **$1,250.00**, which is up by **+12.5%** this month. What insights or forecasts would you like me to generate for this metric?",
-          timestamp: new Date(),
-        },
-      ]
-    case "Active Users":
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "Hello! I've loaded the **Active Users** monthly data. The current total active users stands at **14,820**. Active users peaked in June at 264. Let me know if you want to run user cohort analysis or check trend correlations.",
-          timestamp: new Date(),
-        },
-      ]
-    case "Traffic Sources":
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "I am ready to help you analyze **Traffic Sources** data. Currently, **Direct** leads with **44%** of the 900 sessions, followed by **Referral** at **33%** and **Organic** at **22%**. What segment details would you like to explore?",
-          timestamp: new Date(),
-        },
-      ]
-    case "Performance Index":
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "Hi! I've loaded the **Performance Index** radar dataset. The overall system score is **86/100**. Uptime is leading at 95, while UX has the lowest score at 70. How should we proceed with analyzing these performance vectors?",
-          timestamp: new Date(),
-        },
-      ]
-    case "Total Visitors":
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "Welcome! I've loaded the interactive **Total Visitors** chart. It displays desktop and mobile visits for the selected period. How can I help you analyze visitor trends, device distribution, or seasonal spikes?",
-          timestamp: new Date(),
-        },
-      ]
-    default:
-      return [
-        {
-          id: "init",
-          sender: "assistant",
-          text: "Hello! I'm here to assist with dashboard analytics. Select a chart focus to begin.",
-          timestamp: new Date(),
-        },
-      ]
-  }
+  const meta = TOPICS_METADATA[topic]
+  return [
+    {
+      id: "init",
+      sender: "assistant",
+      text: meta ? meta.initialGreeting : "Hello! I'm here to assist with dashboard analytics. Select a chart focus to begin.",
+      timestamp: new Date(),
+    },
+  ]
 }
 
 const getMockAIResponse = (topic: string, query: string): string => {
@@ -173,6 +161,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     [activeTopic]
   )
 
+  const getTopicContext = React.useCallback((topic: string) => {
+    return TOPICS_METADATA[topic]?.context || ""
+  }, [])
+
   const value = React.useMemo(
     () => ({
       isOpen,
@@ -185,8 +177,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       messages,
       sendMessage,
       isTyping,
+      getTopicContext,
     }),
-    [isOpen, activeTopic, messages, sendMessage, isTyping]
+    [isOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext]
   )
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>

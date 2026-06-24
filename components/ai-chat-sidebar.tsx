@@ -7,7 +7,7 @@ import { Sparkles, X, Send, Bot, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function AiChatSidebar() {
-  const { isOpen, setIsOpen, activeTopic, messages, sendMessage, isTyping } = useChat()
+  const { isOpen, setIsOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext } = useChat()
   const [input, setInput] = React.useState("")
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
@@ -31,6 +31,21 @@ export function AiChatSidebar() {
     }
   }
 
+  const renderMessageText = (text: string) => {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g)
+    return parts.map((part, idx) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        const clean = part.slice(2, -2)
+        return (
+          <strong key={idx} className="font-bold text-zinc-950 dark:text-zinc-50">
+            {clean}
+          </strong>
+        )
+      }
+      return part
+    })
+  }
+
   const activeMessages = messages[activeTopic] || []
 
   return (
@@ -48,9 +63,14 @@ export function AiChatSidebar() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">AI Assistant</h3>
-            <p className="text-[10px] text-zinc-500 flex items-center gap-1 font-medium mt-0.5">
-              Focus: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{activeTopic}</span>
-            </p>
+            <div className="flex flex-col gap-0.5 mt-0.5">
+              <p className="text-[10px] text-zinc-500 font-medium">
+                Focus: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{activeTopic}</span>
+              </p>
+              <p className="text-[9px] text-zinc-400 dark:text-zinc-500 font-medium truncate max-w-[240px]">
+                {getTopicContext(activeTopic)}
+              </p>
+            </div>
           </div>
         </div>
         <Button
@@ -100,7 +120,7 @@ export function AiChatSidebar() {
                       : "bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-950"
                   )}
                 >
-                  {msg.text}
+                  {renderMessageText(msg.text)}
                 </div>
                 <span className="text-[9px] text-zinc-400 dark:text-zinc-500 px-1 font-semibold">
                   {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
