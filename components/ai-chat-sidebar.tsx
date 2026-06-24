@@ -66,7 +66,7 @@ export function AiChatSidebar() {
       {/* Message Feed */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar bg-zinc-50/20 dark:bg-zinc-950/20"
+        className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-zinc-50/20 dark:bg-zinc-950/20"
       >
         {activeMessages.map((msg) => {
           const isAI = msg.sender === "assistant"
