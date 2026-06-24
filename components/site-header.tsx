@@ -12,7 +12,7 @@ export function SiteHeader() {
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4 bg-zinc-200 dark:bg-zinc-800"
           />
-          <h1 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Documents</h1>
+          <h1 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Dashboard</h1>
         </div>
         <a
           href="https://github.com"
