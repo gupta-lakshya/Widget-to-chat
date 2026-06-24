@@ -3,11 +3,11 @@
 import * as React from "react"
 import { useChat } from "@/components/chat-context"
 import { Button } from "@/components/ui/button"
-import { Sparkles, X, Send, Bot, User } from "lucide-react"
+import { Sparkles, X, Send, Bot, User, RotateCcw } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function AiChatSidebar() {
-  const { isOpen, setIsOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext } = useChat()
+  const { isOpen, setIsOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext, clearChat } = useChat()
   const [input, setInput] = React.useState("")
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
@@ -63,14 +63,25 @@ export function AiChatSidebar() {
           </div>
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">AI Assistant</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => setIsOpen(false)}
-          className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
-        >
-          <X className="size-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => clearChat(activeTopic)}
+            title="Reset Chat history"
+            className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-md"
+          >
+            <RotateCcw className="size-3.5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setIsOpen(false)}
+            className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-md"
+          >
+            <X className="size-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Focus Metadata Capsule */}
@@ -136,7 +147,7 @@ export function AiChatSidebar() {
                   {renderMessageText(msg.text)}
                 </div>
                 <span className="text-[9px] text-zinc-400 dark:text-zinc-500 px-1 font-semibold">
-                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             </div>

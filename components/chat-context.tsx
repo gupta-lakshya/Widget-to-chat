@@ -19,6 +19,7 @@ interface ChatContextProps {
   sendMessage: (text: string) => void
   isTyping: boolean
   getTopicContext: (topic: string) => string
+  clearChat: (topic: string) => void
 }
 
 const ChatContext = React.createContext<ChatContextProps | null>(null)
@@ -48,16 +49,50 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeTopic, setActiveTopic] = React.useState("Total Revenue")
   const [messages, setMessages] = React.useState<Record<string, Message[]>>({})
   const [isTyping, setIsTyping] = React.useState(false)
+  const [isLoaded, setIsLoaded] = React.useState(false)
 
-  // Lazy initialize messages for activeTopic if not exists
+  // Load from localStorage on mount
   React.useEffect(() => {
+    try {
+      const stored = localStorage.getItem("widget_chats")
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        const loadedMessages: Record<string, Message[]> = {}
+        for (const topic of Object.keys(parsed)) {
+          loadedMessages[topic] = parsed[topic].map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp),
+          }))
+        }
+        setMessages(loadedMessages)
+      }
+    } catch (e) {
+      console.error("Failed to load chat history from localStorage", e)
+    } finally {
+      setIsLoaded(true)
+    }
+  }, [])
+
+  // Lazy initialize messages for activeTopic if not exists, once loaded
+  React.useEffect(() => {
+    if (!isLoaded) return
     if (!messages[activeTopic]) {
       setMessages((prev) => ({
         ...prev,
         [activeTopic]: initialMessages(activeTopic),
       }))
     }
-  }, [activeTopic, messages])
+  }, [activeTopic, messages, isLoaded])
+
+  // Save to localStorage when messages change, once loaded
+  React.useEffect(() => {
+    if (!isLoaded) return
+    try {
+      localStorage.setItem("widget_chats", JSON.stringify(messages))
+    } catch (e) {
+      console.error("Failed to save chat history to localStorage", e)
+    }
+  }, [messages, isLoaded])
 
   const sendMessage = React.useCallback(
     (text: string) => {
@@ -97,6 +132,13 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     [activeTopic]
   )
 
+  const clearChat = React.useCallback((topic: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [topic]: initialMessages(topic),
+    }))
+  }, [])
+
   const getTopicContext = React.useCallback((topic: string) => {
     return TOPICS_METADATA[topic]?.context || ""
   }, [])
@@ -114,8 +156,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       sendMessage,
       isTyping,
       getTopicContext,
+      clearChat,
     }),
-    [isOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext]
+    [isOpen, activeTopic, messages, sendMessage, isTyping, getTopicContext, clearChat]
   )
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>
