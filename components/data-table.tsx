@@ -169,7 +169,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: "Section Type",
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="px-1.5 text-muted-foreground">
+        <Badge
+          variant="secondary"
+          className="bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-200/50 dark:border-zinc-700/50 rounded-full font-medium py-0 px-2 h-5 text-[11px] w-fit"
+        >
           {row.original.type}
         </Badge>
       </div>
@@ -178,17 +181,29 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === "Done" ? (
-          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
-        ) : (
-          <LoaderIcon
-          />
-        )}
-        {row.original.status}
-      </Badge>
-    ),
+    cell: ({ row }) => {
+      const status = row.original.status
+      if (status === "Done") {
+        return (
+          <Badge
+            variant="secondary"
+            className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/30 rounded-full font-medium gap-1 flex items-center py-0 px-2 h-5 text-[11px] w-fit"
+          >
+            <CircleCheckIcon className="size-3 text-emerald-600 dark:text-emerald-400" />
+            Done
+          </Badge>
+        )
+      }
+      return (
+        <Badge
+          variant="secondary"
+          className="bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/30 rounded-full font-medium gap-1 flex items-center py-0 px-2 h-5 text-[11px] w-fit"
+        >
+          <LoaderIcon className="size-3 text-amber-600 dark:text-amber-400 animate-spin" />
+          {status}
+        </Badge>
+      )
+    },
   },
   {
     accessorKey: "target",
@@ -432,13 +447,13 @@ export function DataTable({
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Columns3Icon data-icon="inline-start" />
-                Columns
-                <ChevronDownIcon data-icon="inline-end" />
+              <Button variant="outline" size="sm" className="font-medium text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:bg-zinc-50">
+                <Columns3Icon data-icon="inline-start" className="size-4 mr-1 text-zinc-500" />
+                Customize Columns
+                <ChevronDownIcon data-icon="inline-end" className="size-4 ml-1 text-zinc-400" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-32">
+            <DropdownMenuContent align="end" className="w-44">
               {table
                 .getAllColumns()
                 .filter(
@@ -462,9 +477,8 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <PlusIcon
-            />
+          <Button variant="outline" size="sm" className="font-medium text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:bg-zinc-50">
+            <PlusIcon className="size-4 mr-1 text-zinc-500" />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
         </div>
@@ -473,7 +487,7 @@ export function DataTable({
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <div className="overflow-hidden rounded-lg border">
+        <div className="overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
           <DndContext
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis]}
